@@ -110,6 +110,10 @@ void __attribute__ ((weak, naked)) reset_handler(void)
 		*dest++ = 0;
 	}
 
+	while (dest < &_stack) {
+		*dest++ = 0xDEADBEEF;
+	}
+
 	/* Ensure 8-byte alignment of stack pointer on interrupts */
 	/* Enabled by default on most Cortex-M parts, but not M3 r1 */
 	SCB->CCR |= SCB_CCR_STKALIGN_Msk;
