@@ -53,7 +53,7 @@ ASM_SOURCES =
 ARCH_FLAGS = -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16
 
 # C defines
-C_DEFS  = STM32F40_41xxx
+C_DEFS  = STM32F40_41xxx HSE_VALUE="((uint32_t)8000000)"
 
 #if debug add DEBUG define
 ifeq ($(DEBUG),true)

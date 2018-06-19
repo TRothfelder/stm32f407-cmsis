@@ -88,7 +88,7 @@ static void pre_main(void)
 
 	RCC->CFGR = (RCC->CFGR  & ~RCC_CFGR_SW) | RCC_CFGR_SW_PLL;        // Set SysClock to PLL
 	while( ( (RCC->CFGR >> 2) & 0x03) != 2) ;// Wait for SysClk to become ready
-
+	//SysClk is now 168MHz
 
 	/* Enable access to Floating-Point coprocessor. */
 	SCB->CPACR = ((0b11 << 10*2) |             /* set CP10 Full Access               */
