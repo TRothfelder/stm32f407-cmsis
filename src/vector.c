@@ -91,8 +91,8 @@ static void pre_main(void)
 	//SysClk is now 168MHz
 
 	/* Enable access to Floating-Point coprocessor. */
-	SCB->CPACR = ((0b11 << 10*2) |             /* set CP10 Full Access               */
-				  (0b11 << 11*2));             /* set CP11 Full Access               */
+	//SCB->CPACR = ((0b11 << 10*2) |             /* set CP10 Full Access               */
+	//			  (0b11 << 11*2));             /* set CP11 Full Access               */
 }
 
 void __attribute__ ((weak, naked)) reset_handler(void)
