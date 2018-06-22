@@ -45,6 +45,7 @@ vector_table_t vector_table = {
 
 static void pre_main(void)
 {
+	/*
 	//set hse on
 	RCC->CR &= ~RCC_CR_HSEON;
 	RCC->CR |= RCC_CR_HSEON;
@@ -89,6 +90,12 @@ static void pre_main(void)
 	RCC->CFGR = (RCC->CFGR  & ~RCC_CFGR_SW) | RCC_CFGR_SW_PLL;        // Set SysClock to PLL
 	while( ( (RCC->CFGR >> 2) & 0x03) != 2) ;// Wait for SysClk to become ready
 	//SysClk is now 168MHz
+	*/
+
+	SystemInit();
+	SystemCoreClockUpdate();
+	__disable_irq();
+
 
 	/* Enable access to Floating-Point coprocessor. */
 	//SCB->CPACR = ((0b11 << 10*2) |             /* set CP10 Full Access               */
@@ -111,7 +118,7 @@ void __attribute__ ((weak, naked)) reset_handler(void)
 	}
 
 	while (dest < &_stack) {
-		*dest++ = 0xDEADBEEF;
+		*dest++ = 0xDEADBEEFU;
 	}
 
 	/* Ensure 8-byte alignment of stack pointer on interrupts */

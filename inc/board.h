@@ -22,7 +22,7 @@
 #define LED_RED (14)
 #define LED_BLUE (15)
 
-#define SYS_TICKS_PER_SEC ((uint32_t)168000000)
+//#define SYS_TICKS_PER_SEC ((uint32_t)168000000)
 
 void delay(uint32_t ticks);
 

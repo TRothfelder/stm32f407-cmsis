@@ -10,7 +10,7 @@
 void delay(uint32_t ticks) {
 	uint32_t i;
 	for (i=0; i<ticks; i++) {
-		__asm("nop");
+		__asm__("nop");
 	}
 }
 

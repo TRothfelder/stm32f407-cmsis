@@ -31,8 +31,10 @@ endif
 ######################################
 # c sources relatively to this makefile, just add custom source files here
 C_SOURCES  = src/main.c
+C_SOURCES += src/system_stm32f4xx.c
 C_SOURCES += src/vector.c
 C_SOURCES += src/board.c
+C_SOURCES += src/os/os.c
 
 # c includes relatively to this makefile
 C_INCLUDES_DIR  = inc
