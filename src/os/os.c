@@ -83,7 +83,7 @@ void OSThread_start(
 __attribute__((naked))
 void pend_sv_handler(void)
 {
-	/* works but not supported by compiler */
+	///* works but not supported by compiler */
 	//__disable_irq();
 	//
 	//if (OS_curr != (OSThread *)0) {
@@ -98,25 +98,22 @@ void pend_sv_handler(void)
 	//
 	//__enable_irq();
 	//__asm__ ("bx lr");
-
-	__asm__ volatile(
-			"cpsid	i	\n" /* disable interrupts*/
-			"LDR	r1,=OS_curr	\n"	/* load ram addres of OS_curr from rom */
-			"LDR	r1,[r1,#0x00]	\n" /* load value of address from OS_curr. this is the address where OS_curr points to */
-			"CBZ	r1,PendSV_restore	\n"
-			"PUSH	{r4-r11}	\n"
-			"LDR	r1,=OS_curr	\n"	/* load ram addres of OS_curr from rom */
-			"LDR	r1,[r1,#0x00]	\n" /* load value of address from OS_curr. this is the address where OS_curr points to */
-			"STR	sp,[r1,#0x00]	\n"
+	__asm__ volatile (
+			"LDR	r0,=OS_curr	\n" /* load ram address from rom of OS_curr */
+			"LDR	r0,[r0]	\n" /* load pointer OS_curr */
+			"CBZ	r0,PendSV_restore	\n" /* if there is no OS_curr skip next steps */
+			"PUSH	{r4-r11}	\n" /* push unsaved registers to stack */
+			"MRS	r1,msp	\n" /* load main stack pointer to r1 */
+			"STR	r1,[r0]	\n" /* save msp to OS_curr */
 			"PendSV_restore:	\n"
-			"LDR	r1,=OS_next	\n"
-			"LDR	r1,[r1,#0x00]	\n"
-			"LDR	sp,[r1,#0x00]	\n"
-			"LDR	r1,=OS_next	\n"
-			"LDR	r1,[r1,#0x00]	\n"
-			"LDR	r2,=OS_curr	\n"
-			"STR	r1,[r2,#0x00]	\n"
-			"cpsie	i	\n" /* enable interrupts*/
-			"bx	lr"	/* return to task */
+			"LDR	r0,=OS_curr	\n"	/* load pointer to OS_curr (ram address of OS_curr) */
+			"LDR	r1,=OS_next	\n" /* load ram address from rom of OS_next */
+			"LDR	r1,[r1]	\n"	/* load pointer OS_next */
+			"STR	r1,[r0]	\n" /* store OS_next to OS_curr (OS_curr=0S_next) */
+			"LDR	r1,[r1]	\n" /* load msp to r1 */
+			"MSR	msp,r1	\n" /* restore the msp */
+			"POP	{r4-r11}	\n" /* pop saved registers */
+			"BX	LR"
 	);
+
 }
